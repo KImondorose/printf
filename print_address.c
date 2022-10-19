@@ -1,25 +1,50 @@
-#include "main.h"
+#include "holberton.h"
+#include <stdlib.h>
 
 /**
- * print_address - prints address of input in hexa format
- * @l: va_list arguments from _printf
- * @f: pointer to the struct flags that determines
- * if a flag is passed to _printf
- * Return: number of char printed
+ * print_p - A function that prints an address
+ * @p: address to print
+ * Return: number of printed characters
  */
-int print_address(va_list l, flags_t *f)
+int print_p(va_list p)
 {
-	char *str;
-	unsigned long int p = va_arg(l, unsigned long int);
+	int counter = 0;
+	unsigned int a[16];
+	unsigned int i = 0, sum = 0;
+	unsigned long n, m = 1152921504606846976;
+	char *str = "(nil)";
 
-	register int count = 0;
+	n = va_arg(p, unsigned long);
+	if (n == 0)
+	{
+		for (; str[i]; i++)
+		{
+			_putchar(str[i]);
+			counter++;
+		}
+		return (counter);
+	}
+	_putchar('0');
+	_putchar('x');
+	counter = 2;
 
-	(void)f;
-
-	if (!p)
-		return (_puts("(nil)"));
-	str = convert(p, 16, 1);
-	count += _puts("0x");
-	count += _puts(str);
-	return (count);
+	a[0] = n / m;
+	for (i = 1; i < 16; i++)
+	{
+		m /= 16;
+		a[i] = (n / m) % 16;
+	}
+	for (i = 0; i < 16; i++)
+	{
+		sum += a[i];
+		if (sum || i == 15)
+		{
+			if (a[i] < 10)
+				_putchar('0' + a[i]);
+			else
+				_putchar('0' + ('a' - ':') + a[i]);
+			counter++;
+		}
+	}
+	return (counter);
 }
